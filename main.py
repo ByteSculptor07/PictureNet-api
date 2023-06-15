@@ -10,7 +10,7 @@ user_base = deta.Base("user")
 def index():
     return "This is the PictureNet api."
     
-@app.route("adduser", methods=["POST"])
+@app.route("/adduser", methods=["POST"])
 def add_user():
     request_data = request.get_json()
     if request_data:
