@@ -15,8 +15,9 @@ def add_user():
     request_data = request.get_json()
     if request_data:
         if not user_base.get(request_data["id"]):
-            user_base.put({"user": request_data["user"], "url": request_data["url"], "liked": []}, request_data["id"])
+            user_base.put({"id": request_data["id"], "url": request_data["url"], "liked": []}, request_data["user"])
+            return "success!"
         else:
-            return "error: user existing"
+            return "error: user existing!"
     else:
         return "error: no data!"
