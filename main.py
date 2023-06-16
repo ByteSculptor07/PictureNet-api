@@ -14,7 +14,7 @@ def index():
 def add_user():
     request_data = request.get_json()
     if request_data:
-        if not user_base.get(request_data["id"]):
+        if not user_base.get(request_data["user"]):
             user_base.put({"id": request_data["id"], "url": request_data["url"], "liked": []}, request_data["user"])
             return "success!"
         else:
