@@ -5,6 +5,7 @@ app = Flask(__name__)
 deta = Deta()
 
 user_base = deta.Base("user")
+img_base = deta.Base("images")
 
 @app.route("/")
 def index():
@@ -19,5 +20,15 @@ def add_user():
             return "success!"
         else:
             return "error: user existing!"
+    else:
+        return "error: no data!"
+
+
+@app.route("/addimg", methods=["POST"])
+def add_image():
+    request_data = request.get_json()
+    if request_data:
+        user_base.put({"url": request_data["url"], "likes": 0})
+        return "success!"
     else:
         return "error: no data!"
