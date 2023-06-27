@@ -1,5 +1,6 @@
 from flask import Flask, request
 from deta import Deta
+import hashlib
 
 app = Flask(__name__)
 deta = Deta()
@@ -28,7 +29,8 @@ def add_user():
 def add_image():
     request_data = request.get_json()
     if request_data:
-        if request_data["id"] == user_base.get(request_data["user"]["id"]):
+        id = request_data["id"]
+        if hashlib.sha256(id.encode("utf_8")).hexdigest() == user_base.get(request_data["user"]["id"]):
            img_base.put({"url": request_data["url"], "likes": 0, "tags": request_data["tags"], "user": request_data["user"]})
            return "success!"
         else:
