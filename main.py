@@ -28,7 +28,7 @@ def add_user():
 def add_image():
     request_data = request.get_json()
     if request_data:
-        user_base.put({"url": request_data["url"], "likes": 0, "tags": request_data["tags"]})
+        user_base.put({"url": request_data["url"], "likes": 0, "tags": request_data["tags"], "user": request_data["user"]})
         return "success!"
     else:
         return "error: no data!"
