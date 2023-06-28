@@ -37,3 +37,12 @@ def add_image():
             return "error: wrong user or id!"
     else:
         return "error: no data!"
+
+@app.route("/getimg/<val>", methods=["GET"])
+def get_image(val):
+    data = img_base.fetch()
+    res = ""
+    for item in data.items[val*10-10:val*10]:
+        res += str(item["url"]) + ","
+    res = res[:-1]
+    return res
