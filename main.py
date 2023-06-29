@@ -47,7 +47,7 @@ def get_image(val):
     res = res[:-1]
     return res
 
-@app.route("/like", methods=["POST"]")
+@app.route("/like", methods=["POST"])
 def like():
     request_data = request.get_json()
     if request_data:
