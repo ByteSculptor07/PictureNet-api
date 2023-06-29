@@ -46,3 +46,39 @@ def get_image(val):
         res += str(item["url"]) + ","
     res = res[:-1]
     return res
+
+@app.route("/like", methods=["POST"]")
+def like():
+    request_data = request.get_json()
+    if request_data:
+        id = request_data["id"]
+        if hashlib.sha256(id.encode("utf_8")).hexdigest() == user_base.get(request_data["user"])["id"]:
+            data = img_base.fetch({"url": request_data["url"]})
+            likes = int(data.items[0]["likes"])
+            key = data.items[0]["key"]
+            likes += 1
+            img_base.update({"likes": likes}, key)
+            return "success!"
+        else:
+            return "error: wrong user or id!"
+    else:
+        return "error: no data!"
+
+@app.route("/unlike", methods=["POST"]")
+def unlike():
+    request_data = request.get_json()
+    if request_data:
+        id = request_data["id"]
+        if hashlib.sha256(id.encode("utf_8")).hexdigest() == user_base.get(request_data["user"])["id"]:
+            data = img_base.fetch({"url": request_data["url"]})
+            likes = int(data.items[0]["likes"])
+            key = data.items[0]["key"]
+            if likes > 0:
+                likes -= 1
+                img_base.update({"likes": likes}, key)
+            return "success!"
+        else:
+            return "error: wrong user or id!"
+    else:
+        return "error: no data!"
+        
