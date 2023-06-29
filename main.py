@@ -64,7 +64,7 @@ def like():
     else:
         return "error: no data!"
 
-@app.route("/unlike", methods=["POST"]")
+@app.route("/unlike", methods=["POST"])
 def unlike():
     request_data = request.get_json()
     if request_data:
