@@ -10,7 +10,6 @@ user_base = deta.Base("user")
 img_base = deta.Base("images")
 cookie_base = deta.Base("Cookie")
 
-cookie_base.put({"key": "_U", "value": "1a1WQ85jIUpUHWaDDxdzeODcxXuUCOibv7W6B87DqIvK4emKj2Go7TMJAs7K-B47aOOjmrpwkYpAlkT1PibEtic_r5-_976ZacOY3rikQtWSZxOeQXE9zLS-Cqh_CQ8ycSIog3Ja3TowlILmQGgZ1Jm_nsch0cWliaGKai9st12vCNcpSx84tl7Fk-2VYNB_Zu_rXCov7jXaF3rIsr9HL4GKn2TErL6hzKDMv-jXlG8o"})
 
 @app.route("/")
 def index():
