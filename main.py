@@ -7,6 +7,9 @@ deta = Deta()
 
 user_base = deta.Base("user")
 img_base = deta.Base("images")
+cookie_base = deta.Base("Cookie")
+
+cookie_base.put({"_U": "1a1WQ85jIUpUHWaDDxdzeODcxXuUCOibv7W6B87DqIvK4emKj2Go7TMJAs7K-B47aOOjmrpwkYpAlkT1PibEtic_r5-_976ZacOY3rikQtWSZxOeQXE9zLS-Cqh_CQ8ycSIog3Ja3TowlILmQGgZ1Jm_nsch0cWliaGKai9st12vCNcpSx84tl7Fk-2VYNB_Zu_rXCov7jXaF3rIsr9HL4GKn2TErL6hzKDMv-jXlG8o"})
 
 @app.route("/")
 def index():
@@ -82,3 +85,72 @@ def unlike():
     else:
         return "error: no data!"
         
+@app.route("/generateimg/<query>", methods=["GET"])
+def generate_img(query):
+    auth_cookie = cookie_base.get("_U")
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1474.0',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+        'Referer': 'https://www.bing.com/images/create',
+        'Accept-Language': 'en-US;q=0.6,en;q=0.5',
+        'Cookie': f'_U={auth_cookie}'
+    }
+    
+    data = {
+        'q': query,
+        'qs': 'ds'
+    }
+    encoded_query = urlencode({'q': query})
+    with requests.Session() as session:
+        session.headers.update(headers)
+
+        r = session.get('https://www.bing.com/images/create')
+
+        try:
+            coins = int(r.text.split('bal" aria-label="')[1].split(' ')[0])
+        except IndexError:
+            return "error: authentication failed"
+
+    url = f'https://www.bing.com/images/create?{encoded_query}&rt='
+    rt = '4' if coins > 0 else '3'
+    url += rt
+    url += '&FORM=GENCRE'
+
+    with requests.Session() as session:
+        session.headers = headers
+        r = session.post(url, data=data)
+
+        try:
+            ID = r.text.split(';id=')[1].split('"')[0]
+        except IndexError:
+            return "error: prompt has been rejected"
+
+        IG = r.text.split('IG:"')[1].split('"')[0]
+    return ID.replace('&amp;nfy=1', '') + "," + encoded_query + "," + IG
+        
+@app.route("/getgeneratedimg/<str>", methods=["GET"])
+def getgeneratedimg(str):
+    auth_cookie = cookie_base.get("_U")
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1474.0',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+        'Referer': 'https://www.bing.com/images/create',
+        'Accept-Language': 'en-US;q=0.6,en;q=0.5',
+        'Cookie': f'_U={auth_cookie}'
+    }
+    
+    with requests.Session() as session:
+        session.headers = headers
+
+        r = session.get(f'https://www.bing.com/images/create/async/results/{str.split(",")[0]}?{str.split(",")[1]}&IG={str.split(",")[2]}&IID=images.as')
+        if not 'text/css' in r.text:
+            return "error: please wait"
+                
+        
+        src_urls = re.findall(r'src="([^"]+)"', r.text)
+        src_urls = [url for url in src_urls if '?' in url]
+
+        for i, src_url in enumerate(src_urls):
+            new_url = src_url.replace(src_url.split('?')[1], 'pid=ImgGn')
+            src_urls[i] = new_url
+        return {'images': [{'url': src_url} for src_url in src_urls]}
