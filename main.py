@@ -88,12 +88,13 @@ def unlike():
 @app.route("/generateimg/<query>", methods=["GET"])
 def generate_img(query):
     auth_cookie = cookie_base.get("_U")["value"]
+    srchhpgusr_cookie = cookie_base.get("srchhpgusr")["value"]
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1474.0',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
         'Referer': 'https://www.bing.com/images/create',
         'Accept-Language': 'en-US;q=0.6,en;q=0.5',
-        'Cookie': f'_U={auth_cookie}'
+        'Cookie': f'_U={auth_cookie};SRCHHPGUSR={srchhpgusr_cookie}'
     }
     
     data = {
@@ -131,12 +132,13 @@ def generate_img(query):
 @app.route("/getgeneratedimg/<str>", methods=["GET"])
 def getgeneratedimg(str):
     auth_cookie = cookie_base.get("_U")["value"]
+    srchhpgusr_cookie = cookie_base.get("srchhpgusr")["value"]
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1474.0',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
         'Referer': 'https://www.bing.com/images/create',
         'Accept-Language': 'en-US;q=0.6,en;q=0.5',
-        'Cookie': f'_U={auth_cookie}'
+        'Cookie': f'_U={auth_cookie};SRCHHPGUSR={srchhpgusr_cookie}'
     }
     
     with requests.Session() as session:
