@@ -114,6 +114,7 @@ def generate_img(query):
 
     url = f'https://www.bing.com/images/create?{encoded_query}&rt='
     rt = '4' if coins > 0 else '3'
+    esttime = '15sec' if coins > 0 else '5min'
     url += rt
     url += '&FORM=GENCRE'
 
@@ -127,7 +128,7 @@ def generate_img(query):
             return "error: prompt has been rejected"
 
         IG = r.text.split('IG:"')[1].split('"')[0]
-    return ID.replace('&amp;nfy=1', '') + "," + encoded_query + "," + IG
+    return ID.replace('&amp;nfy=1', '') + "," + encoded_query + "," + IG + "; " + esttime
         
 @app.route("/getgeneratedimg/<str>", methods=["GET"])
 def getgeneratedimg(str):
