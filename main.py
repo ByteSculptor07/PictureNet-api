@@ -33,10 +33,7 @@ def add_image():
     request_data = request.get_json()
     if request_data:
         id = request_data["id"]
-        if request_data["prompt"]:
-            prompt = request_data["prompt"]
-        else:
-            prompt = ""
+        prompt = request_data["prompt"]
         if hashlib.sha256(id.encode("utf_8")).hexdigest() == user_base.get(request_data["user"])["id"]:
            img_base.put({"url": request_data["url"], "likes": 0, "tags": request_data["tags"], "user": request_data["user"], "prompt": prompt})
            return "success!"
