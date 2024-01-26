@@ -152,8 +152,11 @@ def getgeneratedimg(str):
         
         src_urls = re.findall(r'src="([^"]+)"', r.text)
         src_urls = [url for url in src_urls if '?' in url]
+        src_urls_str = ""
 
         for i, src_url in enumerate(src_urls):
             new_url = src_url.replace(src_url.split('?')[1], 'pid=ImgGn')
             src_urls[i] = new_url
-        return {'images': [{'url': src_url} for src_url in src_urls]}
+            src_urls_str += new_url + ","
+        src_urls_str = src_urls_str[:-1]
+        return src_urls_str
