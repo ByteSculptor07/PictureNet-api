@@ -50,7 +50,7 @@ def get_image(val):
     data = img_base.fetch()
     res = ""
     for item in data.items[int(val)*10-10:int(val)*10]:
-        res += str(item["url"]) + "," + str(item["likes"]) + ";"
+        res += str(item["url"]) + "," + str(item["likes"]) + "," + str(item["prompt"]) + ";"
     res = res[:-1]
     return res
 
