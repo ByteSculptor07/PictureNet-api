@@ -85,6 +85,9 @@ def unlike():
             return "error: wrong user or id!"
     else:
         return "error: no data!"
+
+
+# img creator from https://github.com/dedInc/bingart
         
 @app.route("/generateimg/<query>", methods=["GET"])
 def generate_img(query):
